@@ -32,6 +32,38 @@
   .slide.active [data-r="6"]{animation-delay:.38s}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
+  /* When anim.js is live, GSAP owns entrance choreography.
+     The CSS `rise` above remains the no-JS / load-failure fallback. */
+  body.js-anim .slide.active [data-r]{animation:none}
+  /* Hidden until GSAP reveals it — prevents a flash of final-state content
+     before the entrance plays. Only applied once we know JS+GSAP are alive
+     (js-anim is set solely after GSAP loads), and every shown slide is
+     processed synchronously by anim.js, so nothing stays stuck hidden. */
+  body.js-anim .slide [data-r]{opacity:0}
+  /* Reduced-motion: anim.js reveals instantly; never leave content hidden. */
+  body.js-anim.reduce-motion .slide [data-r]{opacity:1}
+
+  /* Overlays injected by anim.js (SVG connectors, WebGL canvases) must never
+     intercept the deck's click-to-navigate handler. */
+  .fx-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+  .fx-canvas{position:absolute;inset:0;pointer-events:none}
+  /* Shared WebGL field for the dividers — fixed behind the deck, faded by JS.
+     Sits above the static bg-fx (z-index 0) but below slide content (z-index 1). */
+  .fx-webgl{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .7s var(--ease)}
+  body.field-on .fx-webgl{opacity:1}
+  /* Cover hero — fades in over ~1.1s for a premium reveal on load. */
+  .fx-cover{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.1s var(--ease)}
+  body.cover-fx-on .fx-cover{opacity:1}
+  /* Fallback ambience for dividers when WebGL is unavailable / reduced-motion:
+     a calm, near-static radial wash in the divider's accent. */
+  body.no-webgl .slide.divider::before,
+  body.reduce-motion .slide.divider::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(0,212,161,.10),transparent 70%);
+  }
+  .slide > .fx-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+  .slide > .fx-svg ~ *{position:relative}
+
   .kicker{font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.9rem;margin-bottom:1.6rem}
   .kicker::before{content:"";width:34px;height:1px;background:var(--accent);opacity:.7}
   h1{font-family:var(--font-display);font-weight:800;font-optical-sizing:auto;font-size:clamp(2.1rem,4.6vw,3.8rem);line-height:1.05;letter-spacing:-.032em;max-width:20ch;margin-bottom:1.3rem}
@@ -157,7 +189,10 @@
   .compare .side .row b{color:var(--ink);font-weight:600;text-align:right}
 
   /* architecture tier diagram */
-  .arch{display:flex;flex-direction:column;gap:.42rem;margin-top:1.5rem;max-width:1080px}
+  .arch{display:flex;flex-direction:column;gap:.42rem;margin-top:1.5rem;max-width:1080px;position:relative}
+  /* WebGL flow canvas sits behind the readable tier boxes */
+  .arch > .arch-flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+  .arch > .tier,.arch > .down{position:relative;z-index:1}
   .arch .tier{border:1px solid #3c434f;border-radius:11px;padding:.7rem .9rem;background:rgba(255,255,255,.05);display:flex;align-items:center;gap:.9rem}
   .arch .tier .tlbl{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#aeb4be;flex:0 0 92px}
   .arch .tier .boxes{display:flex;gap:.5rem;flex:1;flex-wrap:wrap}
@@ -218,7 +253,11 @@
   .liq-proto{font-family:var(--font-mono);font-size:.6rem;background:rgba(0,212,161,.1);color:var(--accent-2);border:1px solid rgba(0,212,161,.22);border-radius:4px;padding:.15rem .5rem;letter-spacing:.08em;white-space:nowrap}
   .liq-lp span{font-size:.8rem;color:var(--muted)}
   .liq-add{font-size:.7rem;color:var(--faint);font-family:var(--font-mono);margin-top:.75rem}
-  .liq-pipe-wrap{display:flex;align-items:center;padding:0 4px}
+  .liq-pipe-wrap{display:flex;align-items:center;padding:0 4px;position:relative}
+  /* Travelling light packet injected by anim.js — rides the pipe left→right */
+  .liq-packet{position:absolute;top:50%;width:7px;height:7px;border-radius:50%;
+    background:var(--accent-2);box-shadow:0 0 10px 2px rgba(0,240,181,.7);
+    transform:translate(-50%,-50%);pointer-events:none}
   .liq-pipe{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0,var(--accent) 6px,transparent 6px,transparent 14px);background-size:20px 2px;animation:liqPipe .75s linear infinite}
   @keyframes liqPipe{to{background-position:20px 0}}
   .liq-router{border:1px solid var(--accent-dim);border-radius:14px;padding:1.1rem 1.3rem;background:linear-gradient(150deg,rgba(0,212,161,.07) 0%,rgba(0,212,161,.02) 100%);box-shadow:0 0 50px -25px rgba(0,212,161,.35);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.15rem}

@@ -92,6 +92,21 @@
   .colpair .router{writing-mode:vertical-rl;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-2);border-radius:30px;padding:1.2rem .5rem;background:var(--surface)}
   .colpair .pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);animation:pulse 2.1s infinite}
 
+  .asset-strip{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:1.4rem;padding:.7rem 1.1rem;border:1px solid var(--line-2);border-radius:12px;background:rgba(17,19,22,.6);max-width:1000px}
+  .strip-left{display:flex;align-items:center;gap:.9rem}
+  .strip-lbl{font-family:var(--font-mono);font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+  .achips{display:flex;align-items:center;gap:.45rem}
+  .achip{display:inline-flex;align-items:center;gap:.38rem;padding:.25rem .65rem;border-radius:99px;font-size:.78rem;font-weight:600}
+  .achip.live{color:var(--accent);border:1px solid rgba(0,212,161,.3);background:rgba(0,212,161,.07)}
+  .achip.live::before{content:"●";font-size:.5rem;color:var(--accent);opacity:.9}
+  .achip.planned{color:var(--muted);border:1px solid var(--line);background:transparent;opacity:.6}
+  .achip.planned::before{content:"○";font-size:.5rem}
+  .xmargin-badge{display:flex;align-items:center;gap:.55rem;padding:.4rem .95rem .4rem .75rem;border-radius:99px;background:rgba(41,98,255,.1);border:1px solid rgba(41,98,255,.4);white-space:nowrap}
+  .xmargin-badge .xm-icon{font-size:1rem;color:var(--blue)}
+  .xmargin-badge .xm-text{display:flex;flex-direction:column;gap:.05rem}
+  .xmargin-badge .xm-lbl{font-size:.8rem;font-weight:700;color:var(--blue);line-height:1.1}
+  .xmargin-badge .xm-sub{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(41,98,255,.65);line-height:1}
+
   .aflow{display:flex;flex-direction:column;gap:.4rem;margin-top:1.8rem;max-width:940px}
   .aflow .node{display:flex;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:.6rem 1.05rem;background:rgba(255,255,255,.04)}
   .aflow .node .tg{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;color:var(--accent);border:1px solid var(--accent-dim);border-radius:5px;padding:.16rem .42rem;flex:none}

@@ -6,15 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Omnius Technology Exhibition** — an HTML slide deck presenting the Omnius multi-asset trading platform to potential clients at Ava Trade.
 
-No build step, no package manager. Five files plus two CDN libraries:
+No build step, no package manager. Four files plus two CDN libraries:
 
 | File | Contents | Size |
 |------|----------|------|
-| `index.html` | `<head>` + all slide markup (`<main>`) | ~28 KB |
+| `index.html` | `<head>` + all slide markup (`<main>`) | ~30 KB |
 | `styles.css` | Full design system — CSS custom properties, layout, animations | ~18 KB |
 | `app.js` | Slide navigation engine (keyboard, click, dots, progress) | ~1.5 KB |
-| `anim.js` | GSAP entrance choreography + Three.js WebGL effects | ~775 lines |
-| `arch.png` | Architecture diagram (was a base64 inline image) | ~283 KB |
+| `anim.js` | GSAP entrance choreography + Three.js WebGL effects | ~1.2k lines |
 
 **CDN libraries loaded in `<head>` (deferred, in execution order):**
 - **GSAP 3.12.5** — entrance choreography, timeline sequencing, scroll/trigger animations
@@ -36,30 +35,41 @@ Hard-refresh (`Ctrl+Shift+R`) to bust any cached service worker or asset.
 
 ## Architecture
 
-Five-file project:
+Four-file project:
 
-- **`index.html`** — `<head>` + 22 `<section data-i="N">` slides (0–21) inside `<main>`
+- **`index.html`** — `<head>` + 18 `<section data-i="N">` slides (0–17) inside `<main>`
 - **`styles.css`** — full design system via CSS custom properties, slide layout, animations
 - **`app.js`** — slide navigation engine (keyboard ←/→, Space, Home/End; click; progress bar; dot indicators)
 - **`anim.js`** — GSAP entrance choreography + Three.js WebGL effects; runs after `app.js`
-- **`arch.png`** — architecture diagram used in slide 6
 
-### Slide Structure
+> **Index coupling (read before reordering slides):** `app.js` and `anim.js` key
+> off **document order = array index = `data-i`**. `anim.js`'s per-slide `registry`
+> and the WebGL `Field` divider-variant map are keyed by that index — so adding,
+> removing, or reordering a slide means re-pointing those keys. Keep `data-i`
+> equal to the section's position.
 
-| Range | Section |
-|-------|---------|
+### Slide Structure (cover + 3 dividers + 14 content)
+
+| Idx | Section |
+|-----|---------|
 | 0 | Cover |
 | 1 | The Opportunity — CEO-level "why own Omnius at all" pitch (animated leapfrog hero) |
-| 2 | What Omnius Means for Ava |
-| 3 | Divider A |
-| 4 | What Is Omnius (6 capability cards) |
-| 5 | What The Platform Does (functional scope + 3-layer arch) |
-| 6 | Core Components Diagram |
-| 7–14 | Technical Deep Dive (models, liquidity, institutional, SoR, TV, bespoke, perf, foundation) |
-| 15 | Divider B |
-| 16–18 | Why We Built It & How (AI team, AI proof, cost comparison) |
-| 19 | Divider C (live demo) |
-| 20–21 | Closing |
+| 2 | The proof — cost & time vs a 2022 vendor quote (leads with the result) |
+| 3 | Divider A — "What's inside" |
+| 4 | What The Platform Does (functional scope + 3-layer arch) |
+| 5 | Beyond MT4/MT5 — an open platform (REST · FIX · WebSocket API) |
+| 6 | Multi-asset + two execution models |
+| 7 | Liquidity + customized pools |
+| 8 | Institutional becomes viable |
+| 9 | Statement of record |
+| 10 | TradingView integration |
+| 11 | Built to extend (reframed "scaffolded"; crane animation) |
+| 12 | Performance & resilience + engineering principles (merged) |
+| 13 | Divider B — "Why we built it — and how" |
+| 14 | AI-enabled engineering team (assembly line + proof, merged) |
+| 15 | Divider C — live demo |
+| 16 | Capability map (8 domains) |
+| 17 | Close |
 
 ### Design System (CSS Variables)
 

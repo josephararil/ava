@@ -38,7 +38,7 @@ Hard-refresh (`Ctrl+Shift+R`) to bust any cached service worker or asset.
 
 Five-file project:
 
-- **`index.html`** — `<head>` + 23 `<section data-i="N">` slides (0–22) inside `<main>`
+- **`index.html`** — `<head>` + 22 `<section data-i="N">` slides (0–21) inside `<main>`
 - **`styles.css`** — full design system via CSS custom properties, slide layout, animations
 - **`app.js`** — slide navigation engine (keyboard ←/→, Space, Home/End; click; progress bar; dot indicators)
 - **`anim.js`** — GSAP entrance choreography + Three.js WebGL effects; runs after `app.js`
@@ -49,16 +49,17 @@ Five-file project:
 | Range | Section |
 |-------|---------|
 | 0 | Cover |
-| 1–2 | Intro (Opportunity + What Omnius Means for Ava) |
+| 1 | The Opportunity — CEO-level "why own Omnius at all" pitch (animated leapfrog hero) |
+| 2 | What Omnius Means for Ava |
 | 3 | Divider A |
 | 4 | What Is Omnius (6 capability cards) |
 | 5 | What The Platform Does (functional scope + 3-layer arch) |
 | 6 | Core Components Diagram |
 | 7–14 | Technical Deep Dive (models, liquidity, institutional, SoR, TV, bespoke, perf, foundation) |
 | 15 | Divider B |
-| 16–19 | Why We Built It & How (own vs rent, AI team, AI proof, cost comparison) |
-| 20 | Divider C (live demo) |
-| 21–22 | Closing |
+| 16–18 | Why We Built It & How (AI team, AI proof, cost comparison) |
+| 19 | Divider C (live demo) |
+| 20–21 | Closing |
 
 ### Design System (CSS Variables)
 

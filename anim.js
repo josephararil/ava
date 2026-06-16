@@ -223,8 +223,8 @@
       if (variants[idx]) return variants[idx];
       var conf = ({
         3:  { motif: 'ico',   color: GREEN, accent: LIME },
-        15: { motif: 'octa',  color: LIME,  accent: GREEN },
-        19: { motif: 'torus', color: GREEN, accent: BLUE }
+        13: { motif: 'octa',  color: LIME,  accent: GREEN },
+        15: { motif: 'torus', color: GREEN, accent: BLUE }
       })[idx] || { motif: 'ico', color: GREEN, accent: LIME };
 
       var g = new THREE.Group();
@@ -1126,22 +1126,25 @@
   // Hero — the "leap" opportunity pitch.
   registry[1]  = { enter: opportunityEnter };
 
+  // The cost/time proof — moved up to lead.
+  registry[2]  = { enter: compareEnter };  // Adaptive vs Omnius
+
   // Section dividers A / B / C  ->  WebGL field + letter reveal.
   registry[3]  = { enter: dividerEnter };
+  registry[13] = { enter: dividerEnter };
   registry[15] = { enter: dividerEnter };
-  registry[19] = { enter: dividerEnter };
 
   // Flow / architecture diagrams.
-  registry[5] = { enter: archEnter };     // Edge->Core->Data (WebGL hero)
-  registry[7] = { enter: colpairEnter };  // two models + smart router
-  registry[8] = { enter: liqEnter };      // liquidity routing + packets
+  registry[4] = { enter: archEnter };     // Edge->Core->Data (WebGL hero)
+  registry[6] = { enter: colpairEnter };  // two models + smart router
+  registry[7] = { enter: liqEnter };      // liquidity routing + packets
+  // 5 = "Beyond MT4/MT5" open-platform/API slide -> generic entrance
 
   // Storytelling / data slides.
-  registry[11] = { enter: tvEnter };       // TradingView — animated candlestick chart
-  registry[12] = { enter: scaffoldEnter }; // Scaffolded — crane + half-built high-rise
-  registry[16] = { enter: pipelineEnter }; // AI assembly-line
-  registry[13] = { enter: statEnter };     // <2ms / 500K–1M+ / <1s / 24/7
-  registry[18] = { enter: compareEnter };  // Adaptive vs Omnius
+  registry[10] = { enter: tvEnter };       // TradingView — animated candlestick chart
+  registry[11] = { enter: scaffoldEnter }; // Built to extend — crane + half-built high-rise
+  registry[12] = { enter: statEnter };     // merged perf+eng: <2ms / 500K–1M+ / <1s / 24/7
+  registry[14] = { enter: pipelineEnter }; // AI assembly-line
 
   /* ------------------------------------------------------------- the hook */
   var current = null;

@@ -4,9 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Omnius Technology Exhibition** — a single-file HTML slide deck presenting the Omnius multi-asset trading platform to potential clients at Ava Trade.
+**Omnius Technology Exhibition** — an HTML slide deck presenting the Omnius multi-asset trading platform to potential clients at Ava Trade.
 
-No build step, no dependencies, no package manager. The entire project is `index.html`.
+No build step, no dependencies, no package manager. Four files:
+
+| File | Contents | Size |
+|------|----------|------|
+| `index.html` | `<head>` + all slide markup (`<main>`) | ~28 KB |
+| `styles.css` | Full design system — CSS custom properties, layout, animations | ~18 KB |
+| `app.js` | Slide navigation engine (keyboard, click, dots, progress) | ~1.5 KB |
+| `arch.png` | Architecture diagram (was a base64 inline image) | ~283 KB |
 
 ## Running & Viewing
 
@@ -24,11 +31,12 @@ Hard-refresh (`Ctrl+Shift+R`) to bust any cached service worker or asset.
 
 ## Architecture
 
-Single HTML file (~430 KB) structured as:
+Four-file project:
 
-- **`<style>`** — full design system via CSS custom properties, slide layout, animations
-- **`<main>`** — 23 `<section data-i="N">` slides (0–22)
-- **`<script>`** — slide navigation engine (keyboard ←/→, Space, Home/End; click; progress bar; dot indicators)
+- **`index.html`** — `<head>` + 23 `<section data-i="N">` slides (0–22) inside `<main>`
+- **`styles.css`** — full design system via CSS custom properties, slide layout, animations
+- **`app.js`** — slide navigation engine (keyboard ←/→, Space, Home/End; click; progress bar; dot indicators)
+- **`arch.png`** — architecture diagram used in slide 6
 
 ### Slide Structure
 
@@ -63,8 +71,9 @@ Fonts: Inter (body), Roboto Mono (code/metrics) — loaded from Google Fonts.
 
 ## Editing Guidelines
 
-- All changes happen in `index.html` — no separate CSS or JS files.
-- Slide content is in the `<main>` block. Each slide is `<section data-i="N" class="slide ...">`.
-- To add a slide: add a new `<section>` with the next sequential `data-i`, then update the total count in the JS navigation logic if it uses a hardcoded max.
-- The JS navigation tracks current index in a variable and reads `data-i` attributes — check for any hardcoded slide-count references when adding/removing slides.
+- **Slide text** → edit `index.html` (the `<main>` block). Each slide is `<section data-i="N" class="slide ...">`.
+- **Styling** → edit `styles.css`.
+- **Navigation logic** → edit `app.js`.
+- **Architecture diagram** → replace `arch.png`.
+- To add a slide: add a new `<section>` with the next sequential `data-i`. The JS uses `slides.length` dynamically — no hardcoded count to update.
 - Animations use the `.rise` class with staggered CSS `animation-delay` via `style` attributes — follow existing patterns.

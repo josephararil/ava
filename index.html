@@ -107,11 +107,37 @@
       </div>
       <div class="punch" data-r="5">The core is an <strong>Aeron Cluster</strong> — a deterministic, replicated state machine. Each layer scales and fails independently.</div>
     </section>
-    <!-- 9 CORE COMPONENTS DIAGRAM -->
+    <!-- 6 FOUNDATION — WHY IT MATTERS -->
     <section class="slide" data-i="6">
-      <div class="kicker" data-r="1">Core components</div>
-      <img class="archimg" data-r="2" src="arch.png" alt="Omnius core components — clients and LPs feed through stateless ×N edge services and one relay into the in-memory core; databases sit downstream">
-      <div class="punch" data-r="3">Clients and LPs feed through <strong>stateless, ×N edge services</strong> and one <strong>relay</strong> into the in-memory core — databases sit downstream, never in the hot path.</div>
+      <div class="kicker" data-r="1">Foundation</div>
+      <h1 data-r="2">Why It <em>Matters</em></h1>
+      <p class="lede" data-r="3">Omnius was built foundation-first — core infrastructure before business functionality, so every capability added on top is fast, stable and safe to change.</p>
+      <div class="fpillars" data-r="4">
+        <div class="fpillar">
+          <div class="fhead spd">Flexibility &amp; Speed</div>
+          <div class="fbody">
+            <div class="fi"><h4>Test ideas in days, not months</h4><p>Microservices architecture means teams ship independently. No single deployment bottleneck, no platform-wide risk from a single change.</p></div>
+            <div class="fi"><h4>Fast to market for new products</h4><p>New capabilities sit on top of a stable, tested foundation. Adding a product no longer requires a platform-wide rebuild.</p></div>
+            <div class="fi"><h4>Ability to be agile</h4><p>Cloud-native design allows rapid response to market changes. The system bends to the business, not the other way around.</p></div>
+          </div>
+        </div>
+        <div class="fpillar hl">
+          <div class="fhead perf">Performance &amp; Reliability</div>
+          <div class="fbody">
+            <div class="fi"><h4>Microsecond-level processing</h4><p>In-memory trading core with no database on the hot path. Orders processed in under 2ms end-to-end through the cluster.</p></div>
+            <div class="fi"><h4>Zero-downtime · 24/7 availability</h4><p>Raft consensus cluster with automatic failover in seconds. No maintenance windows. A failed node is replaced with zero data loss.</p></div>
+            <div class="fi"><h4>Self-healing infrastructure</h4><p>Kubernetes automatically recovers failed components. Full observability across every service — proactive, not reactive support.</p></div>
+          </div>
+        </div>
+        <div class="fpillar">
+          <div class="fhead fut">Future-Proofing</div>
+          <div class="fbody">
+            <div class="fi"><h4>Modern stack — relevant for 10+ years</h4><p>Java 21, Kubernetes, Aeron, TimescaleDB — proven, widely-supported technology built to last.</p></div>
+            <div class="fi"><h4>Scalable architecture grows with the business</h4><p>Stateless gateways scale horizontally under load. The core stays deterministic; the edge absorbs volume spikes.</p></div>
+            <div class="fi"><h4>Every future capability depends on this base</h4><p>Multi-asset, institutional flow, additional LPs, reporting — all next-layer additions to what is already built and proven.</p></div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 10 TWO MODELS + MULTI-ASSET -->

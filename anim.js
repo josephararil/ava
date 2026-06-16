@@ -909,6 +909,147 @@
     return function () { tl.kill(); TVChart.stop(); };
   }
 
+  // Slide 12 — "Scaffolded": half-built high-rise + crane, hook lowering a floor panel.
+  // Injected once as a background SVG; GSAP animates the hook lift cycle and the
+  // newly-placed slab glow. Teardown kills the repeating tweens only.
+  function scaffoldEnter(slide) {
+    var firstTime = !slide.querySelector('.scaffold-scene');
+
+    if (firstTime) {
+      var scene = document.createElement('div');
+      scene.className = 'scaffold-scene';
+      // SVG: viewBox 0 0 230 315.
+      // Building: x=25–185 (w=160). Completed floors y=152–305, scaffold y=84–152,
+      // latest slab y=68–84. Crane mast x=179–186, jib y=18–23, hook at cx=70.
+      var svg = '<svg viewBox="0 0 230 315" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+        + '<defs>'
+        + '<pattern id="sc-wins" x="25" y="152" width="40" height="17" patternUnits="userSpaceOnUse">'
+        + '<rect x="4" y="3" width="12" height="9" rx="1" fill="#0a1520" stroke="#19253a" stroke-width=".5"/>'
+        + '<rect x="22" y="3" width="12" height="9" rx="1" fill="#0a1520" stroke="#19253a" stroke-width=".5"/>'
+        + '</pattern>'
+        + '</defs>'
+        // ground glow + slab
+        + '<ellipse cx="105" cy="310" rx="82" ry="6" fill="#00d4a1" fill-opacity=".25"/>'
+        + '<rect x="25" y="305" width="160" height="5" rx="1" fill="#0d1014" stroke="#1e2535" stroke-width="1"/>'
+        // completed building body + windows
+        + '<rect x="25" y="152" width="160" height="153" fill="#0d1014"/>'
+        + '<rect x="25" y="152" width="160" height="153" fill="url(#sc-wins)"/>'
+        // floor lines
+        + '<line x1="25" y1="169" x2="185" y2="169" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="186" x2="185" y2="186" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="203" x2="185" y2="203" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="220" x2="185" y2="220" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="237" x2="185" y2="237" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="254" x2="185" y2="254" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="271" x2="185" y2="271" stroke="#1e2535" stroke-width=".8"/>'
+        + '<line x1="25" y1="288" x2="185" y2="288" stroke="#1e2535" stroke-width=".8"/>'
+        // completed section outline
+        + '<rect x="25" y="152" width="160" height="153" fill="none" stroke="#2a3040" stroke-width="1.5"/>'
+        // scaffold verticals
+        + '<line x1="25" y1="84" x2="25" y2="152" stroke="#1e2535" stroke-width="1.8"/>'
+        + '<line x1="65" y1="84" x2="65" y2="152" stroke="#1e2535" stroke-width="1.2"/>'
+        + '<line x1="105" y1="84" x2="105" y2="152" stroke="#1e2535" stroke-width="1.2"/>'
+        + '<line x1="145" y1="84" x2="145" y2="152" stroke="#1e2535" stroke-width="1.2"/>'
+        + '<line x1="185" y1="84" x2="185" y2="152" stroke="#1e2535" stroke-width="1.8"/>'
+        // scaffold horizontals
+        + '<line x1="25" y1="84" x2="185" y2="84" stroke="#1e2535" stroke-width="1.5"/>'
+        + '<line x1="25" y1="101" x2="185" y2="101" stroke="#1e2535" stroke-width="1"/>'
+        + '<line x1="25" y1="118" x2="185" y2="118" stroke="#1e2535" stroke-width="1"/>'
+        + '<line x1="25" y1="135" x2="185" y2="135" stroke="#1e2535" stroke-width="1"/>'
+        // scaffold diagonal bracing (zigzag per bay)
+        + '<line x1="25" y1="84" x2="65" y2="101" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="65" y1="101" x2="25" y2="118" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="25" y1="118" x2="65" y2="135" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="65" y1="135" x2="25" y2="152" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="105" y1="84" x2="65" y2="101" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="65" y1="101" x2="105" y2="118" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="105" y1="118" x2="65" y2="135" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="65" y1="135" x2="105" y2="152" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="105" y1="84" x2="145" y2="101" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="145" y1="101" x2="105" y2="118" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="105" y1="118" x2="145" y2="135" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="145" y1="135" x2="105" y2="152" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="145" y1="84" x2="185" y2="101" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="185" y1="101" x2="145" y2="118" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="145" y1="118" x2="185" y2="135" stroke="#17222e" stroke-width=".8"/>'
+        + '<line x1="185" y1="135" x2="145" y2="152" stroke="#17222e" stroke-width=".8"/>'
+        // latest slab highlight (the floor the crane is placing)
+        + '<rect class="s-topslab" x="25" y="68" width="160" height="16"'
+        + ' fill="#00d4a1" fill-opacity=".07" stroke="#00d4a1" stroke-width="1" stroke-opacity=".4"/>'
+        + '<line x1="65" y1="68" x2="65" y2="84" stroke="#00d4a1" stroke-width=".8" stroke-opacity=".3"/>'
+        + '<line x1="105" y1="68" x2="105" y2="84" stroke="#00d4a1" stroke-width=".8" stroke-opacity=".3"/>'
+        + '<line x1="145" y1="68" x2="145" y2="84" stroke="#00d4a1" stroke-width=".8" stroke-opacity=".3"/>'
+        // crane mast
+        + '<rect x="179" y="22" width="7" height="46" fill="#172028" stroke="#243040" stroke-width="1"/>'
+        + '<line x1="179" y1="30" x2="186" y2="30" stroke="#243040" stroke-width=".5"/>'
+        + '<line x1="179" y1="38" x2="186" y2="38" stroke="#243040" stroke-width=".5"/>'
+        + '<line x1="179" y1="46" x2="186" y2="46" stroke="#243040" stroke-width=".5"/>'
+        + '<line x1="179" y1="54" x2="186" y2="54" stroke="#243040" stroke-width=".5"/>'
+        // jib (horizontal beam, full span)
+        + '<rect x="18" y="18" width="205" height="5" fill="#172028" stroke="#243040" stroke-width=".8" rx="1"/>'
+        // mast cap
+        + '<rect x="176" y="14" width="14" height="6" rx="1" fill="#1a2838" stroke="#243040" stroke-width=".8"/>'
+        // jib stay cables
+        + '<line x1="182" y1="15" x2="22" y2="21" stroke="#1e2d3a" stroke-width=".8" opacity=".6"/>'
+        + '<line x1="182" y1="15" x2="219" y2="21" stroke="#1e2d3a" stroke-width=".8" opacity=".6"/>'
+        // counterweight
+        + '<rect x="203" y="23" width="17" height="9" rx="1" fill="#192535" stroke="#243040" stroke-width=".8"/>'
+        // pulley at trolley position on jib
+        + '<circle cx="70" cy="20" r="2.5" fill="none" stroke="#243040" stroke-width="1"/>'
+        // cable (y2 animated by GSAP)
+        + '<line class="s-cable" x1="70" y1="23" x2="70" y2="48" stroke="#253545" stroke-width="1.5"/>'
+        // load block — the floor panel being lowered (y animated by GSAP)
+        + '<rect class="s-load" x="58" y="48" width="24" height="13" rx="1"'
+        + ' fill="#0d1820" stroke="#00d4a1" stroke-width="1.2" stroke-opacity=".75"/>'
+        + '</svg>';
+      scene.innerHTML = svg;
+      slide.insertBefore(scene, slide.firstChild);
+    }
+
+    if (reduceMotion) {
+      gsap.set(slide.querySelector('.scaffold-scene'), { opacity: 0.2 });
+      return;
+    }
+
+    var scene = slide.querySelector('.scaffold-scene');
+    var cable = slide.querySelector('.s-cable');
+    var load  = slide.querySelector('.s-load');
+    var slab  = slide.querySelector('.s-topslab');
+
+    // Text entrance (generic)
+    genericEnter(slide);
+
+    // Fade in illustration
+    gsap.fromTo(scene, { opacity: 0 }, { opacity: 0.22, duration: 1.4, ease: 'power2.out', delay: 0.2 });
+
+    // Gentle slab glow pulse
+    if (slab) {
+      gsap.fromTo(slab,
+        { attr: { 'fill-opacity': '0.05', 'stroke-opacity': '0.3' } },
+        { attr: { 'fill-opacity': '0.16', 'stroke-opacity': '0.65' },
+          duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    }
+
+    // Hook lowering cycle: load descends from y=48 (raised) to y=68 (placed)
+    if (!cable || !load) return;
+    var state = { y: 48 };
+    var tw = gsap.to(state, {
+      y: 68,
+      duration: 2.8,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+      repeatDelay: 0.8,
+      onUpdate: function () {
+        var y = String(Math.round(state.y));
+        cable.setAttribute('y2', y);
+        load.setAttribute('y', y);
+      }
+    });
+
+    return function () { tw.kill(); gsap.killTweensOf(slab); };
+  }
+
   /* --------------------------------------------------------------- registry */
   // Map data-i -> { enter(slide), exit(slide) }. Anything without an entry
   // falls back to genericEnter. exit() is for tearing down per-slide effects
@@ -959,6 +1100,7 @@
 
   // Storytelling / data slides.
   registry[11] = { enter: tvEnter };       // TradingView — animated candlestick chart
+  registry[12] = { enter: scaffoldEnter }; // Scaffolded — crane + half-built high-rise
   registry[17] = { enter: pipelineEnter }; // AI assembly-line
   registry[13] = { enter: statEnter };     // <2ms / 500K–1M+ / <1s / 24/7
   registry[19] = { enter: compareEnter };  // Adaptive vs Omnius

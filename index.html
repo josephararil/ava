@@ -174,10 +174,40 @@
     <section class="slide" data-i="8">
       <div class="kicker" data-r="1">Liquidity &amp; pricing</div>
       <h1 data-r="2">Aggregated liquidity, priced <em>per client.</em></h1>
-      <div class="cards" data-r="3">
-        <div class="card hl"><span class="lbl">Any LP, any protocol</span><h3>Connect your providers</h3><p>Connect liquidity providers over FIX, WebSocket or REST — configured to your relationships. Adding one is configuration, not engineering.</p></div>
-        <div class="card"><span class="lbl">Routing</span><h3>Best-execution book</h3><p>Score sources on price, fill quality and speed; split large orders; circuit-break failing feeds — all built in.</p></div>
-        <div class="card"><span class="lbl">Monetization</span><h3>Customized pools</h3><p>Per-account pools and pricing tiers — markup, volume discounts, spread control — Retail, Institutional and VIP priced distinctly.</p></div>
+      <div class="liq-flow" data-r="3">
+
+        <div class="liq-sources">
+          <div class="liq-col-hd">LP Sources</div>
+          <div class="liq-lp"><code class="liq-proto">FIX</code><span>Provider A</span></div>
+          <div class="liq-lp"><code class="liq-proto">WebSocket</code><span>Provider B</span></div>
+          <div class="liq-lp"><code class="liq-proto">REST</code><span>Provider C</span></div>
+          <div class="liq-add">+ Add via YAML — no core changes</div>
+        </div>
+
+        <div class="liq-pipe-wrap"><div class="liq-pipe"></div></div>
+
+        <div class="liq-router">
+          <span class="liq-pulse"></span>
+          <div class="liq-col-hd">Smart Router</div>
+          <div class="liq-scores">
+            <span>Price</span><span>Fill rate</span><span>Latency</span><span>Credit</span>
+          </div>
+          <div class="liq-strategy"><code>BEST_EXECUTION</code> default</div>
+          <div class="liq-cb">⚡ Circuit-breaker failover</div>
+          <span class="liq-pulse"></span>
+        </div>
+
+        <div class="liq-pipe-wrap"><div class="liq-pipe"></div></div>
+
+        <div class="liq-books">
+          <div class="liq-col-hd">Routing &amp; Pools</div>
+          <div class="liq-book liq-abook"><strong>A-book</strong><span>Route externally · best price</span></div>
+          <div class="liq-book liq-bbook"><strong>B-book</strong><span>Internalize · margin control</span></div>
+          <div class="liq-tiers">
+            <span>Retail</span><span>Professional</span><span class="liq-tier-vip">VIP</span>
+          </div>
+        </div>
+
       </div>
       <div class="punch" data-r="4">The customized-pool layer is your <strong>margin lever</strong> — the same liquidity, shaped into differentiated product.</div>
     </section>

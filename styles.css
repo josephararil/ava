@@ -209,10 +209,40 @@
   .fpillar .fi h4{font-size:.87rem;font-weight:700;color:var(--ink);margin-bottom:.25rem;line-height:1.25;letter-spacing:-.01em}
   .fpillar .fi p{font-size:.76rem;color:var(--muted);line-height:1.44}
 
+  /* === slide 8: liquidity flow diagram === */
+  .liq-flow{display:grid;grid-template-columns:1fr 72px 1.1fr 72px 1fr;align-items:stretch;margin-top:1.5rem;max-width:980px;gap:0}
+  .liq-col-hd{font-family:var(--font-mono);font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem}
+  .liq-sources{border:1px solid var(--line-2);border-radius:14px;padding:1.1rem 1.2rem;background:rgba(14,16,18,.85);display:flex;flex-direction:column}
+  .liq-lp{display:flex;align-items:center;gap:.65rem;padding:.45rem 0;border-bottom:1px solid var(--line)}
+  .liq-lp:last-of-type{border-bottom:none}
+  .liq-proto{font-family:var(--font-mono);font-size:.6rem;background:rgba(0,212,161,.1);color:var(--accent-2);border:1px solid rgba(0,212,161,.22);border-radius:4px;padding:.15rem .5rem;letter-spacing:.08em;white-space:nowrap}
+  .liq-lp span{font-size:.8rem;color:var(--muted)}
+  .liq-add{font-size:.7rem;color:var(--faint);font-family:var(--font-mono);margin-top:.75rem}
+  .liq-pipe-wrap{display:flex;align-items:center;padding:0 4px}
+  .liq-pipe{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0,var(--accent) 6px,transparent 6px,transparent 14px);background-size:20px 2px;animation:liqPipe .75s linear infinite}
+  @keyframes liqPipe{to{background-position:20px 0}}
+  .liq-router{border:1px solid var(--accent-dim);border-radius:14px;padding:1.1rem 1.3rem;background:linear-gradient(150deg,rgba(0,212,161,.07) 0%,rgba(0,212,161,.02) 100%);box-shadow:0 0 50px -25px rgba(0,212,161,.35);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.15rem}
+  .liq-pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.1s infinite;display:block;margin:.25rem auto}
+  .liq-scores{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;margin:.4rem 0}
+  .liq-scores span{font-family:var(--font-mono);font-size:.57rem;letter-spacing:.06em;background:rgba(255,255,255,.05);border:1px solid var(--line-2);border-radius:20px;padding:.18rem .55rem;color:var(--muted)}
+  .liq-strategy{font-size:.72rem;color:var(--faint);margin:.1rem 0}
+  .liq-strategy code{font-family:var(--font-mono);font-size:.62rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.1rem .35rem;border-radius:3px}
+  .liq-cb{font-size:.7rem;color:var(--faint);margin-top:.15rem}
+  .liq-books{display:flex;flex-direction:column;gap:.5rem}
+  .liq-book{border:1px solid var(--line);border-radius:10px;padding:.65rem 1rem;display:flex;flex-direction:column;gap:.2rem;background:rgba(14,16,18,.85)}
+  .liq-abook{border-color:rgba(41,98,255,.35);box-shadow:0 0 30px -15px rgba(41,98,255,.2)}
+  .liq-bbook{border-color:var(--accent-dim);box-shadow:0 0 30px -15px rgba(0,212,161,.2)}
+  .liq-book strong{font-size:.9rem;font-weight:700}
+  .liq-book span{font-size:.76rem;color:var(--muted)}
+  .liq-tiers{display:flex;gap:.4rem;margin-top:.4rem;flex-wrap:wrap}
+  .liq-tiers span{font-family:var(--font-mono);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:20px;padding:.22rem .65rem;color:var(--muted);background:rgba(255,255,255,.04)}
+  .liq-tier-vip{border-color:rgba(0,212,161,.35)!important;color:var(--accent)!important}
+
   @media (max-width:820px){
     .cards,.cards.two,.capgrid,.prin,.colpair,.fromto,.compare,.fpillars{grid-template-columns:1fr} .stats{flex-direction:column} .stats .s{border-left:0;border-top:1px solid var(--line)} .stats .s:first-child{border-top:0}
     .arch .tier{flex-direction:column;align-items:stretch} .arch .tier .tlbl{flex:none}
     .brandmark,.hint{display:none}
+    .liq-flow{grid-template-columns:1fr} .liq-pipe-wrap{display:none}
   }
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
   @media print{

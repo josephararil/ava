@@ -224,7 +224,7 @@
       var conf = ({
         3:  { motif: 'ico',   color: GREEN, accent: LIME },
         15: { motif: 'octa',  color: LIME,  accent: GREEN },
-        20: { motif: 'torus', color: GREEN, accent: BLUE }
+        19: { motif: 'torus', color: GREEN, accent: BLUE }
       })[idx] || { motif: 'ico', color: GREEN, accent: LIME };
 
       var g = new THREE.Group();
@@ -1050,6 +1050,41 @@
     return function () { tw.kill(); gsap.killTweensOf(slab); };
   }
 
+  // Slide 1 — the hero "leap": text + cards rise, then the leap arc draws on
+  // with a glowing marker travelling from "Today (MT4/5)" up onto the owned
+  // "Omnius" plateau. The flowing-dash energy on the arc is always-on CSS.
+  function opportunityEnter(slide) {
+    if (reduceMotion) return;           // settle() already revealed everything
+    var tl = genericEnter(slide);       // headline + three cards rise/ripple
+
+    var arc    = slide.querySelector('#leapArc');
+    var marker = slide.querySelector('.leap-marker');
+    var dest   = slide.querySelector('.leap-dest');
+
+    if (arc && arc.getTotalLength) {
+      var len = arc.getTotalLength();
+      gsap.set(arc, { strokeDasharray: len, strokeDashoffset: len });
+      tl.to(arc, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.out' }, '-0.15');
+
+      if (marker) {
+        var mp = { d: 0 };
+        gsap.set(marker, { attr: { cx: 268, cy: 146 }, opacity: 1 });
+        tl.to(mp, {
+          d: len, duration: 1.0, ease: 'power2.out',
+          onUpdate: function () {
+            var pt = arc.getPointAtLength(mp.d);
+            marker.setAttribute('cx', pt.x);
+            marker.setAttribute('cy', pt.y);
+          }
+        }, '<');
+      }
+    }
+
+    if (dest) {
+      tl.fromTo(dest, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-0.3');
+    }
+  }
+
   /* --------------------------------------------------------------- registry */
   // Map data-i -> { enter(slide), exit(slide) }. Anything without an entry
   // falls back to genericEnter. exit() is for tearing down per-slide effects
@@ -1088,10 +1123,13 @@
     return CoverFX.enter() || undefined;   // null -> no teardown when no WebGL
   } };
 
+  // Hero — the "leap" opportunity pitch.
+  registry[1]  = { enter: opportunityEnter };
+
   // Section dividers A / B / C  ->  WebGL field + letter reveal.
   registry[3]  = { enter: dividerEnter };
   registry[15] = { enter: dividerEnter };
-  registry[20] = { enter: dividerEnter };
+  registry[19] = { enter: dividerEnter };
 
   // Flow / architecture diagrams.
   registry[5] = { enter: archEnter };     // Edge->Core->Data (WebGL hero)
@@ -1101,9 +1139,9 @@
   // Storytelling / data slides.
   registry[11] = { enter: tvEnter };       // TradingView — animated candlestick chart
   registry[12] = { enter: scaffoldEnter }; // Scaffolded — crane + half-built high-rise
-  registry[17] = { enter: pipelineEnter }; // AI assembly-line
+  registry[16] = { enter: pipelineEnter }; // AI assembly-line
   registry[13] = { enter: statEnter };     // <2ms / 500K–1M+ / <1s / 24/7
-  registry[19] = { enter: compareEnter };  // Adaptive vs Omnius
+  registry[18] = { enter: compareEnter };  // Adaptive vs Omnius
 
   /* ------------------------------------------------------------- the hook */
   var current = null;

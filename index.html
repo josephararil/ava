@@ -28,16 +28,66 @@
       <div class="cover-foot" data-r="4"><span class="live"><i></i> A platform to own, not a licence to rent</span><span>What's inside · Why · How · Live demo</span></div>
     </section>
 
-    <!-- 1 THE OPPORTUNITY -->
+    <!-- 1 THE OPPORTUNITY (CEO pitch — why own Omnius at all) -->
     <section class="slide" data-i="1">
       <div class="kicker" data-r="1">The opportunity</div>
-      <h1 data-r="2">A modern platform — yours to <em>own</em> and shape.</h1>
-      <div class="fromto" data-r="3">
-        <div class="b"><div class="t">What you keep</div><h3>Your front-end &amp; clients</h3><p>Your proprietary mobile front-end, your brand and your client relationships all stay yours.</p></div>
-        <div class="arr">+</div>
-        <div class="b next"><div class="t">What Omnius adds</div><h3>An engine you own</h3><p>A modern, multi-asset platform you own — extensible to your needs, open to institutional flow, and a single book of record across everything you run.</p></div>
+      <h1 data-r="2">Leap a decade ahead — on a platform you <em>own</em>.</h1>
+
+      <div class="leap-wrap" data-r="3">
+        <svg class="leap-svg" viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="leapGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"  stop-color="#2962ff"/>
+              <stop offset="38%" stop-color="#00d4a1"/>
+              <stop offset="100%" stop-color="#00f0b5"/>
+            </linearGradient>
+            <linearGradient id="leapNodeFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"  stop-color="#00d4a1" stop-opacity=".13"/>
+              <stop offset="100%" stop-color="#00d4a1" stop-opacity=".03"/>
+            </linearGradient>
+          </defs>
+
+          <!-- axes (capability vs time) -->
+          <line x1="58" y1="22" x2="58" y2="176" stroke="rgba(150,160,175,.16)" stroke-width="1"/>
+          <line x1="58" y1="176" x2="970" y2="176" stroke="rgba(150,160,175,.16)" stroke-width="1"/>
+          <text x="28" y="100" transform="rotate(-90 28 100)" text-anchor="middle" font-family="Roboto Mono,monospace" font-size="7.5" letter-spacing="2" fill="rgba(150,160,175,.42)">CAPABILITY</text>
+          <text x="966" y="192" text-anchor="end" font-family="Roboto Mono,monospace" font-size="7.5" letter-spacing="2" fill="rgba(150,160,175,.42)">TIME →</text>
+
+          <!-- the slow conventional path (de-emphasised) -->
+          <path class="leap-legacy" d="M268 146 C 450 140 560 128 742 122"/>
+          <circle cx="742" cy="122" r="3.5" fill="none" stroke="rgba(107,114,128,.5)" stroke-width="1"/>
+          <text x="330" y="164" font-family="Inter,sans-serif" font-size="10" font-style="italic" fill="rgba(150,160,175,.5)">the slow rebuild most brokers still face</text>
+
+          <!-- the Omnius leap -->
+          <text x="276" y="36" font-family="Inter,sans-serif" font-size="11" font-style="italic" fill="rgba(0,240,181,.72)">Skip the rebuild — no legacy, no technical debt</text>
+          <path id="leapArc" class="leap-arc" d="M268 146 C 470 150 460 56 610 54 C 712 52 738 72 752 72"/>
+          <path class="leap-flow" d="M268 146 C 470 150 460 56 610 54 C 712 52 738 72 752 72"/>
+          <circle class="leap-marker" cx="752" cy="72" r="5"/>
+
+          <!-- TODAY node (what you keep / where you are) -->
+          <rect x="72" y="120" width="196" height="52" rx="10" fill="rgba(14,16,18,.92)" stroke="rgba(41,98,255,.42)" stroke-width="1"/>
+          <circle cx="90" cy="138" r="3.5" fill="#2962ff" opacity=".85"/>
+          <text x="104" y="141" font-family="Roboto Mono,monospace" font-size="7.5" letter-spacing="1.6" fill="rgba(41,98,255,.75)">TODAY</text>
+          <text x="90" y="161" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="#8ab0ff">MT4 / MT5 — rented</text>
+
+          <!-- OMNIUS node (the destination you own) -->
+          <g class="leap-dest">
+            <rect x="748" y="26" width="214" height="94" rx="14" fill="url(#leapNodeFill)" stroke="rgba(0,212,161,.5)" stroke-width="1.5"/>
+            <circle cx="766" cy="50" r="3.5" fill="#00d4a1"/>
+            <text x="780" y="53" font-family="Roboto Mono,monospace" font-size="8" font-weight="700" letter-spacing="2.5" fill="rgba(0,212,161,.78)">OMNIUS</text>
+            <text x="766" y="82" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#e8eaed">A platform you own</text>
+            <text x="766" y="103" font-family="Inter,sans-serif" font-size="9.5" fill="rgba(0,240,181,.85)">Modern · 10+ years · zero tech debt</text>
+          </g>
+        </svg>
       </div>
-      <div class="punch" data-r="4">Omnius is a foundation you'd <strong>own and shape</strong> — built to extend into new markets and new revenue.</div>
+
+      <div class="cards" data-r="4">
+        <div class="card"><span class="lbl">Plug &amp; play</span><h3>Plug in — don't rip out</h3><p>Keep your front-end, brand and clients. Omnius slides in beneath them as the modern engine — modernizing what you run and opening new revenue, with minimal disruption.</p></div>
+        <div class="card hl"><span class="lbl">Ownership</span><h3>The platform — and the team</h3><p>Not a SaaS licence you rent forever. You own a complete platform on Aeron, plus the AI-enabled team that built it — there to shape it to exactly how you work.</p></div>
+        <div class="card"><span class="lbl">Future-proof</span><h3>A decade ahead, zero baggage</h3><p>Step onto one of the most modern trading systems in the market — no legacy constraints, no technical debt, built to stay current for 10+ years.</p></div>
+      </div>
+
+      <div class="punch" data-r="5">You're not buying software — you're buying a modern platform, the team behind it, and a decade's head start. <strong>All yours to own.</strong></div>
     </section>
 
     <!-- 2 WHAT OMNIUS MEANS FOR AVA -->
@@ -428,20 +478,8 @@
       <div class="sub" data-r="3">An AI-enabled engineering team</div>
     </section>
 
-    <!-- 4 OWN NOT RENT -->
-    <section class="slide" data-i="16">
-      <div class="kicker" data-r="1">Why build our own</div>
-      <h1 data-r="2">Own the engine, <em>own the advantage.</em></h1>
-      <div class="cards" data-r="3">
-        <div class="card"><span class="lbl">Economics</span><h3>Owned outright</h3><p>A platform you own outright — an asset whose value compounds as you grow, rather than a line you keep paying for.</p></div>
-        <div class="card hl"><span class="lbl">Control</span><h3>Bespoke to you</h3><p>Set your own rules, products and integrations. The engine bends to your business — not the other way around.</p></div>
-        <div class="card"><span class="lbl">Reach</span><h3>Beyond retail</h3><p>Multi-asset and institutional-capable from the core — opening new markets on top of your retail base.</p></div>
-      </div>
-      <div class="punch" data-r="4"><strong>An owned platform is an asset</strong> — and a moat: your economics, your rules, your roadmap.</div>
-    </section>
-
     <!-- 5 HOW: AI TEAM -->
-    <section class="slide" data-i="17">
+    <section class="slide" data-i="16">
       <div class="kicker" data-r="1">How we built it</div>
       <h1 data-r="2">An <em>AI-enabled</em> engineering team.</h1>
       <p class="lede" data-r="3">We don't just use AI to write code faster. We built an assembly line where independent AI agents check each other's work — so we get startup velocity <strong>without</strong> the bugs that usually come with speed.</p>
@@ -460,7 +498,7 @@
     </section>
 
     <!-- 6 AI PROOF -->
-    <section class="slide" data-i="18">
+    <section class="slide" data-i="17">
       <div class="kicker" data-r="1">Why the quality holds</div>
       <h1 data-r="2">Speed that doesn't cut corners.</h1>
       <div class="cards" data-r="3">
@@ -472,7 +510,7 @@
     </section>
 
     <!-- 7 ADAPTIVE COMPARISON -->
-    <section class="slide" data-i="19">
+    <section class="slide" data-i="18">
       <div class="kicker" data-r="1">The proof, in cost &amp; time</div>
       <h1 data-r="2">The same scope — a <em>fraction</em> of the cost and time.</h1>
       <p class="lede" data-r="3">In 2022 we received a proposal from <strong>Adaptive</strong> for a modernized platform build. Here's that quote against what our AI-enabled team actually delivered.</p>
@@ -496,13 +534,13 @@
     </section>
 
     <!-- 18 DIVIDER C / DEMO -->
-    <section class="slide divider" data-i="20">
+    <section class="slide divider" data-i="19">
       <div class="dnum" data-r="1">C</div><h1 data-r="2">Live platform demonstration</h1>
       <div class="sub" data-r="3">Seeing it work, end to end</div>
     </section>
 
     <!-- 19 CAPABILITY MAP -->
-    <section class="slide" data-i="21">
+    <section class="slide" data-i="20">
       <div class="kicker" data-r="1">The full picture</div>
       <h1 data-r="2" style="margin-bottom:.4rem">One platform · <em>every capability.</em></h1>
       <div class="capgrid" data-r="3">
@@ -519,7 +557,7 @@
     </section>
 
     <!-- 20 CLOSE -->
-    <section class="slide" data-i="22">
+    <section class="slide" data-i="21">
       <div class="kicker" data-r="1">In one line</div>
       <h1 data-r="2">A platform to <em>own</em> — multi-asset, institutional-ready, <span class="lime">bespoke-able.</span></h1>
       <p class="lede" data-r="3">Replace the rented engine, keep your front-end, and own a modern multi-asset platform — open institutional revenue, consolidate your book of record, and integrate TradingView natively. Built by an AI-enabled team in under a year, at a fraction of the cost of a traditional build — and a platform that plugs into the systems you already run.</p>

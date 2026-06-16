@@ -292,6 +292,17 @@
   .sor-prop-name{font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--accent);margin-bottom:.28rem;letter-spacing:-.01em}
   .sor-prop-desc{font-size:.77rem;color:var(--muted);line-height:1.5}
 
+  /* === slide 1: the leap (modernize + leapfrog) === */
+  .leap-wrap{width:100%;max-width:1000px;margin:1.5rem 0 .3rem;display:block}
+  .leap-svg{width:100%;height:auto;display:block;aspect-ratio:1000/200}
+  .leap-legacy{fill:none;stroke:rgba(107,114,128,.45);stroke-width:1.5;stroke-dasharray:5 7;stroke-linecap:round}
+  .leap-arc{fill:none;stroke:url(#leapGrad);stroke-width:3;stroke-linecap:round}
+  /* always-on "energy" riding the leap — same path, short travelling dash */
+  .leap-flow{fill:none;stroke:var(--accent-2);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:2 26;opacity:.9;animation:leapFlow 1.4s linear infinite}
+  @keyframes leapFlow{to{stroke-dashoffset:-28}}
+  .leap-marker{fill:var(--accent-2);filter:drop-shadow(0 0 6px rgba(0,240,181,.85))}
+  .leap-dest{filter:drop-shadow(0 0 16px rgba(0,212,161,.28))}
+
   /* === Slide 11 — TradingView Integration === */
   .tv-layout{display:flex;gap:2.5rem;align-items:flex-start;margin-top:1.2rem}
   .tv-col-text{flex:0 0 42%;display:flex;flex-direction:column}

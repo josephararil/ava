@@ -693,6 +693,222 @@
     }
   }
 
+  /* ======================================================= TVChart (slide 11)
+     Canvas 2D animated candlestick chart mimicking a TradingView panel.
+     Candles draw in left→right on enter; current-price dashed line pulses
+     once all candles are shown. RAF is stopped when the slide exits. */
+  var TVChart = (function () {
+    var canvas, ctx, raf = null, proxy = { v: 0 };
+    var candles = [], N = 30, progress = 0, t = 0;
+
+    function gen() {
+      candles = [];
+      var price = 1.08056;
+      for (var i = 0; i < N; i++) {
+        var open  = price;
+        var bias  = i < N * 0.55 ? 0.52 : 0.45;
+        var move  = (Math.random() - bias) * 0.0020;
+        var close = open + move;
+        var high  = Math.max(open, close) + Math.random() * 0.0006;
+        var low   = Math.min(open, close) - Math.random() * 0.0006;
+        candles.push({ o: open, h: high, l: low, c: close });
+        price = close;
+      }
+    }
+
+    function resize() {
+      if (!canvas) return;
+      var p = canvas.parentElement;
+      if (!p) return;
+      var r = p.getBoundingClientRect();
+      var W = r.width || 460, H = r.height || 218;
+      canvas.width  = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function draw() {
+      if (!ctx || !candles.length) return;
+      var W = canvas.width / dpr, H = canvas.height / dpr;
+      ctx.clearRect(0, 0, W, H);
+      var vis = Math.min(Math.ceil(progress), N);
+      if (!vis) return;
+
+      var hi = candles.reduce(function (m, c) { return Math.max(m, c.h); }, -Infinity);
+      var lo = candles.reduce(function (m, c) { return Math.min(m, c.l); },  Infinity);
+      var rng = hi - lo || 0.001;
+      var pad = { l: 6, r: 58, t: 10, b: 22 };
+      var cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+      var slotW = cW / N, bodyW = Math.max(2, slotW * 0.56);
+
+      function py(p) { return pad.t + cH * (1 - (p - lo) / rng); }
+
+      // Grid
+      ctx.textAlign = 'right';
+      ctx.font = '8.5px Roboto Mono, monospace';
+      for (var gi = 0; gi <= 4; gi++) {
+        var gp = lo + rng * gi / 4;
+        var gy = py(gp);
+        ctx.strokeStyle = 'rgba(43,49,58,0.65)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 6]);
+        ctx.beginPath(); ctx.moveTo(pad.l, gy); ctx.lineTo(pad.l + cW, gy); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(100,108,118,0.62)';
+        ctx.fillText(gp.toFixed(4), W - 4, gy + 3);
+      }
+
+      // Volume bars (deterministic sizing so they don't jump on redraws)
+      var vZone = cH * 0.22;
+      for (var vi = 0; vi < vis; vi++) {
+        var vA = vi === vis - 1 ? Math.min(1, progress - vi + 1) : 1;
+        var vx = pad.l + vi * slotW + slotW / 2;
+        var vh = (0.28 + ((vi * 17 + 7) % 11) / 11 * 0.72) * vZone;
+        ctx.globalAlpha = vA * 0.5;
+        ctx.fillStyle = candles[vi].c >= candles[vi].o
+          ? 'rgba(0,212,161,0.4)' : 'rgba(255,71,87,0.35)';
+        ctx.fillRect(vx - bodyW / 2, H - pad.b - vh, bodyW, vh);
+      }
+      ctx.globalAlpha = 1;
+
+      // MA-5 line
+      if (vis >= 5) {
+        ctx.strokeStyle = 'rgba(41,98,255,0.5)';
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        for (var mi = 4; mi < vis; mi++) {
+          var ma = 0;
+          for (var mj = mi - 4; mj <= mi; mj++) ma += candles[mj].c;
+          ma /= 5;
+          var mx = pad.l + mi * slotW + slotW / 2;
+          ctx.globalAlpha = mi === vis - 1 ? Math.min(1, progress - mi + 1) : 1;
+          if (mi === 4) ctx.moveTo(mx, py(ma)); else ctx.lineTo(mx, py(ma));
+        }
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      // Candles
+      for (var ci = 0; ci < vis; ci++) {
+        var c  = candles[ci];
+        var ca = ci === vis - 1 ? Math.min(1, progress - ci + 1) : 1;
+        var cx = pad.l + ci * slotW + slotW / 2;
+        var up = c.c >= c.o;
+        ctx.globalAlpha = ca;
+        ctx.strokeStyle = up ? '#00d4a1' : '#ff4757';
+        ctx.lineWidth = 1; ctx.setLineDash([]);
+        ctx.beginPath(); ctx.moveTo(cx, py(c.h)); ctx.lineTo(cx, py(c.l)); ctx.stroke();
+        var bT = py(Math.max(c.o, c.c)), bB = py(Math.min(c.o, c.c));
+        ctx.fillStyle = up ? 'rgba(0,212,161,0.9)' : 'rgba(255,71,87,0.85)';
+        ctx.fillRect(cx - bodyW / 2, bT, bodyW, Math.max(1.5, bB - bT));
+      }
+      ctx.globalAlpha = 1;
+
+      // Current-price line + pulsing tag once all candles are visible
+      if (progress >= N - 0.05) {
+        var last  = candles[N - 1].c;
+        var ly    = py(last);
+        var pulse = 0.5 + 0.5 * Math.sin(t * 2.6);
+        ctx.strokeStyle = 'rgba(0,212,161,' + (0.28 + 0.18 * pulse) + ')';
+        ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
+        ctx.beginPath(); ctx.moveTo(pad.l, ly); ctx.lineTo(pad.l + cW, ly); ctx.stroke();
+        ctx.setLineDash([]);
+        var tW = 54, tH = 14, tX = pad.l + cW + 2, tY = ly - tH / 2;
+        ctx.fillStyle = 'rgba(0,212,161,' + (0.82 + 0.18 * pulse) + ')';
+        ctx.beginPath();
+        if (ctx.roundRect) { ctx.roundRect(tX, tY, tW, tH, 3); } else { ctx.rect(tX, tY, tW, tH); }
+        ctx.fill();
+        ctx.fillStyle = '#08090b';
+        ctx.font = 'bold 8.5px Roboto Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(last.toFixed(4), tX + tW / 2, ly + 3.2);
+      }
+    }
+
+    function tick() { raf = requestAnimationFrame(tick); t += 0.016; draw(); }
+
+    return {
+      enter: function (wrap) {
+        gen(); progress = 0; t = 0;
+        if (!canvas) {
+          canvas = document.createElement('canvas');
+          canvas.style.cssText = 'display:block;width:100%;height:100%';
+          ctx = canvas.getContext('2d');
+        }
+        wrap.innerHTML = '';
+        wrap.appendChild(canvas);
+        resize();
+        gsap.killTweensOf(proxy);
+        proxy.v = 0;
+        gsap.to(proxy, {
+          v: N, duration: N * 0.09, ease: 'power1.inOut',
+          onUpdate: function () { progress = proxy.v; },
+          onComplete: function () { progress = N; }
+        });
+        if (!raf) tick();
+      },
+      stop: function () {
+        gsap.killTweensOf(proxy);
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+      }
+    };
+  })();
+
+  function tvEnter(slide) {
+    var kicker   = slide.querySelector('.kicker');
+    var h1       = slide.querySelector('h1');
+    var lede     = slide.querySelector('.lede');
+    var tvBadges = slide.querySelector('.tv-badges');
+    var badges   = [].slice.call(slide.querySelectorAll('.tv-badge'));
+    var punch    = slide.querySelector('.punch');
+    var chartCol = slide.querySelector('.tv-col-chart');
+    var wrap     = slide.querySelector('.tv-canvas-wrap');
+
+    if (reduceMotion) {
+      gsap.set(risers(slide), { opacity: 1, y: 0 });
+      if (chartCol) gsap.set(chartCol, { opacity: 1 });
+      if (wrap) TVChart.enter(wrap);
+      return function () { TVChart.stop(); };
+    }
+
+    var tl = gsap.timeline();
+
+    // Text column — staggered rise
+    tl.fromTo([kicker, h1, lede].filter(Boolean),
+      { opacity: 0, y: TIMING.rise },
+      { opacity: 1, y: 0, duration: TIMING.dur, ease: TIMING.ease, stagger: TIMING.stagger });
+
+    // Badge container visible; individual badges slide in from left
+    if (tvBadges) tl.set(tvBadges, { opacity: 1 }, 0);
+    if (badges.length) {
+      tl.fromTo(badges,
+        { opacity: 0, x: -14 },
+        { opacity: 1, x: 0, duration: 0.38, ease: 'power2.out', stagger: 0.1 }, '-0.05');
+    }
+
+    // Punch last
+    if (punch) {
+      tl.fromTo(punch, { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, '>-0.05');
+    }
+
+    // Chart panel slides in from right, simultaneous with the text column
+    if (chartCol) {
+      tl.fromTo(chartCol, { opacity: 0, x: 28, scale: 0.98 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.65, ease: TIMING.ease }, 0.14);
+    }
+
+    // Draw the chart after the panel has revealed
+    if (wrap) {
+      tl.add(function () { TVChart.enter(wrap); }, 0.52);
+    }
+
+    return function () { tl.kill(); TVChart.stop(); };
+  }
+
   /* --------------------------------------------------------------- registry */
   // Map data-i -> { enter(slide), exit(slide) }. Anything without an entry
   // falls back to genericEnter. exit() is for tearing down per-slide effects
@@ -742,6 +958,7 @@
   registry[8] = { enter: liqEnter };      // liquidity routing + packets
 
   // Storytelling / data slides.
+  registry[11] = { enter: tvEnter };       // TradingView — animated candlestick chart
   registry[17] = { enter: pipelineEnter }; // AI assembly-line
   registry[13] = { enter: statEnter };     // <2ms / 500K–1M+ / <1s / 24/7
   registry[19] = { enter: compareEnter };  // Adaptive vs Omnius

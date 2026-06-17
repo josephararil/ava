@@ -92,8 +92,8 @@ Fonts: Inter (body), Roboto Mono (code/metrics) — loaded from Google Fonts.
 - **Styling** → edit `styles.css`.
 - **Navigation logic** → edit `app.js`.
 - **Animations & 3D effects** → edit `anim.js`.
-- **Architecture diagram** → replace `arch.png`.
-- To add a slide: add a new `<section>` with the next sequential `data-i`. The JS uses `slides.length` dynamically — no hardcoded count to update.
+- **Architecture diagram** → the 3-layer tier diagram is inline markup (`.arch`) on the "What The Platform Does" slide.
+- To add a slide: add a new `<section>` with the next sequential `data-i`. The JS uses `slides.length` dynamically, but `anim.js`'s `registry`/`Field` are keyed by index — re-point them if you insert, remove, or reorder slides (see the index-coupling note above).
 - CSS `[data-r]` staggered rise-in is the **fallback** for when `anim.js` hasn't loaded. When `anim.js` is live, it adds `body.js-anim` and GSAP takes over entrance choreography entirely.
 
 ## Animation System
@@ -107,6 +107,6 @@ Two layers work together:
 - **Three.js WebGL** — particle fields / 3D ambient effects on divider slides (A, B, C) and the cover hero; injected as fixed `.fx-webgl` / `.fx-cover` canvases behind slide content
 - **SVG connectors** — `anim.js` can inject `.fx-svg` overlays inside slides for animated paths/flows
 
-**When adding animations, prefer `anim.js` + GSAP** over new CSS keyframes — it gives timeline control, easing presets, and plays well with the existing entrance system. Pure CSS animations (like the `sor-*` SVG flows on slide 10) are fine for self-contained, always-on effects that don't need to be sequenced with slide transitions.
+**When adding animations, prefer `anim.js` + GSAP** over new CSS keyframes — it gives timeline control, easing presets, and plays well with the existing entrance system. Pure CSS animations (like the `sor-*` SVG flows on the statement-of-record slide, or the `leap-flow` on the hero) are fine for self-contained, always-on effects that don't need to be sequenced with slide transitions.
 
 **Reduced-motion:** `anim.js` checks `prefers-reduced-motion` and sets `body.reduce-motion` — reveal elements instantly, skip WebGL. Always respect this in any new animation code.
